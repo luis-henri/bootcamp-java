@@ -2,6 +2,8 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+.idea/
+*.iml
 
 ### Eclipse ###
 .apt_generated
@@ -27,3 +29,14 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# H2 database
+*.mv.db
+*.trace.db
+
+# Maven / Gradle
+target/
+build/
+
+# Logs
+*.log
