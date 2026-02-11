@@ -33,9 +33,9 @@ public class Main {
             // Tratamento de erro caso o usuário digite letra em vez de número
             if(scanner.hasNextInt()) {
                 opcao = scanner.nextInt();
-                scanner.nextLine(); // Limpa o "enter" do buffer
+                scanner.nextLine();
             } else {
-                scanner.nextLine(); // Limpa a entrada inválida
+                scanner.nextLine();
                 opcao = -1; // Força cair no default
             }
 
