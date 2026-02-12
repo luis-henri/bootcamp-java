@@ -98,7 +98,7 @@ public class UsuarioRepository {
         try (var conn = getConnection();
              var stmt = conn.prepareStatement(sql)) {
 
-            stmt.setLong(1, id);
+            stmt.setLong(1, id); //aqui substitiu a ? pelo ID que o usuário irá escolher
             stmt.executeUpdate();
             System.out.println("Usuário deletado (ID: " + id + ")");
         } catch (SQLException e) {

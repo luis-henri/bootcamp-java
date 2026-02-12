@@ -27,6 +27,7 @@ public class Main {
             System.out.println("1 - Cadastrar Usuário");
             System.out.println("2 - Listar Usuários");
             System.out.println("3 - Editar Usuário");
+            System.out.println("4 - Excluir Usuário");
             System.out.println("0 - Sair");
             System.out.print("Opção: ");
 
@@ -72,6 +73,16 @@ public class Main {
                     String emailEditar = scanner.nextLine();
 
                     service.editarUsuario(idEditar, nomeEditar, emailEditar);
+                    break;
+
+                case 4:
+                    System.out.println("\n--- Excluir Usuário---");
+                    System.out.println("Digite o ID do usuário que irá ser excluído: ");
+                    Long idExcluir = scanner.nextLong();
+                    scanner.nextLine();
+
+                    service.removerUsuario(idExcluir);
+
                     break;
 
                 case 0:
