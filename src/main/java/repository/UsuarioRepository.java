@@ -1,108 +1,60 @@
 package repository;
 
 import model.Usuario;
-import java.sql.*;
-import java.util.ArrayList;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import java.util.List;
 
 public class UsuarioRepository {
 
-    // Conexão em arquivo local para persistir dados mesmo após fechar o app
-    private static final String URL = "jdbc:h2:./banco_social_dogs";
-    private static final String USER = "sa";
-    private static final String PASSWORD = "123456";
-
-    public UsuarioRepository() {
-        criarTabela();
-    }
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-
-    private void criarTabela() {
-        String sql = """
-                CREATE TABLE IF NOT EXISTS usuarios (
-                    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                    nome VARCHAR(255) NOT NULL,
-                    email VARCHAR(255) NOT NULL
-                )
-                """;
-        try (var conn = getConnection();
-             var stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    // Cria a fábrica de conexões baseada no nome que demos no persistence.xml
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("socialDogsPU");
 
     public void salvar(Usuario usuario) {
-        String sql = "INSERT INTO usuarios (nome, email) VALUES (?, ?)";
-        try (var conn = getConnection();
-             var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
 
-            stmt.setString(1, usuario.getNome());
-            stmt.setString(2, usuario.getEmail());
-            stmt.executeUpdate();
+        em.persist(usuario);
 
-            // Recuperar o ID gerado automaticamente
-            try (var generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    usuario.setId(generatedKeys.getLong(1));
-                }
-            }
-            System.out.println("Usuário salvo: " + usuario.getNome());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        em.getTransaction().commit();
+        em.close();
     }
 
     public List<Usuario> listarTodos() {
-        List<Usuario> usuarios = new ArrayList<>();
-        String sql = "SELECT * FROM usuarios";
-
-        try (var conn = getConnection();
-             var stmt = conn.createStatement();
-             var rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                usuarios.add(new Usuario(
-                        rs.getLong("id"),
-                        rs.getString("nome"),
-                        rs.getString("email")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        EntityManager em = emf.createEntityManager();
+        List<Usuario> usuarios = em.createQuery("FROM Usuario", Usuario.class).getResultList();
+        em.close();
         return usuarios;
     }
 
-    public void atualizar(Usuario usuario) {
-        String sql = "UPDATE usuarios SET nome = ?, email = ? WHERE id = ?";
-        try (var conn = getConnection();
-             var stmt = conn.prepareStatement(sql)) {
+    public Usuario buscarPorId(Long id) {
+        EntityManager em = emf.createEntityManager();
+        Usuario usuario = em.find(Usuario.class, id);
+        em.close();
+        return usuario;
+    }
 
-            stmt.setString(1, usuario.getNome());
-            stmt.setString(2, usuario.getEmail());
-            stmt.setLong(3, usuario.getId());
-            stmt.executeUpdate();
-            System.out.println("Usuário atualizado com sucesso!");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public void atualizar(Usuario usuario) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        em.merge(usuario);
+
+        em.getTransaction().commit();
+        em.close();
     }
 
     public void deletar(Long id) {
-        String sql = "DELETE FROM usuarios WHERE id = ?";
-        try (var conn = getConnection();
-             var stmt = conn.prepareStatement(sql)) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
 
-            stmt.setLong(1, id); //aqui substitiu a ? pelo ID que o usuário irá escolher
-            stmt.executeUpdate();
-            System.out.println("Usuário deletado (ID: " + id + ")");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        Usuario usuario = em.find(Usuario.class, id);
+        if (usuario != null) {
+            em.remove(usuario);
         }
+
+        em.getTransaction().commit();
+        em.close();
     }
 }

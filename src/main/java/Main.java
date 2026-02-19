@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class Main {
     public static void main(String[] args) {
 
-        // 1. Inicia o H2 para eu ver o banco de dados
+        // 1. Inicia o H2 para eu ver o banco de dados'
         try {
             Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082").start();
             System.out.println("H2 Console disponível em: http://localhost:8082");

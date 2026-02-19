@@ -1,9 +1,23 @@
 package model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "usuarios")
 public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false)
     private String email;
+
+    //jpa precisa de um construtor vazio
+    public Usuario() {
+    }
 
     public Usuario(Long id, String nome, String email) {
         this.id = id;
