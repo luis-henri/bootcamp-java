@@ -4,8 +4,10 @@ import model.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
+@Repository
 public class UsuarioRepository {
 
     // Cria a fábrica de conexões baseada no nome que demos no persistence.xml
