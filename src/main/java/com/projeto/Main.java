@@ -1,3 +1,9 @@
+package com.projeto;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import service.UsuarioService;
 import model.Usuario;
 import org.h2.tools.Server; // Importante para ver no navegador
@@ -5,8 +11,18 @@ import org.h2.tools.Server; // Importante para ver no navegador
 import java.util.Scanner;
 import java.sql.SQLException;
 
-public class Main {
+@SpringBootApplication(scanBasePackages = {"service", "repository"})
+public class Main implements CommandLineRunner {
+
+    @Autowired
+    private UsuarioService service;
+
     public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
 
         // 1. Inicia o H2 para eu ver o banco de dados'
         try {
@@ -32,7 +48,7 @@ public class Main {
             System.out.print("Opção: ");
 
             // Tratamento de erro caso o usuário digite letra em vez de número
-            if(scanner.hasNextInt()) {
+            if (scanner.hasNextInt()) {
                 opcao = scanner.nextInt();
                 scanner.nextLine();
             } else {
