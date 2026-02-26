@@ -29,6 +29,11 @@ public class UsuarioService {
         return repository.listarTodos();
     }
 
+    //Aplicando para editar no frontend para que no controller eu consiga mandar para o front um unico usuario.
+    public Usuario buscarUsuarioPorId(Long id) {
+        return repository.buscarPorId(id);
+    }
+
     public void editarUsuario(Long id, String novoNome, String novoEmail) {
         Usuario usuario = new Usuario(id, novoNome, novoEmail);
         repository.atualizar(usuario);
