@@ -1,6 +1,6 @@
-package repository;
+package com.projeto.repository;
 
-import model.Usuario;
+import com.projeto.model.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;

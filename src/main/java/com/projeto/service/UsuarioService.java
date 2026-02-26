@@ -1,9 +1,9 @@
-package service;
+package com.projeto.service;
 
-import model.Usuario;
+import com.projeto.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.UsuarioRepository;
+import com.projeto.repository.UsuarioRepository;
 import java.util.List;
 
 @Service

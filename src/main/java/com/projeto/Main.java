@@ -4,14 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import service.UsuarioService;
-import model.Usuario;
+import com.projeto.service.UsuarioService;
+import com.projeto.model.Usuario;
 import org.h2.tools.Server; // Importante para ver no navegador
 
 import java.util.Scanner;
 import java.sql.SQLException;
 
-@SpringBootApplication(scanBasePackages = {"service", "repository"})
+@SpringBootApplication(scanBasePackages = {"com.projeto.service", "com.projeto.repository"})
 public class Main implements CommandLineRunner {
 
     @Autowired
