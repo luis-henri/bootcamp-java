@@ -13,6 +13,12 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
+    //Adicionando GetMapping para a azure identificar a página inicial
+    @GetMapping("/")
+    public String paginaInicial(){
+        return "redirect:/usuarios";
+    }
+
     @GetMapping("/usuarios")
     public String listarUsuarios(Model model) {
         var lista = service.buscarTodosUsuarios();
